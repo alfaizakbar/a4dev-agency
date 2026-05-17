@@ -25,9 +25,9 @@ const Header = () => {
     { name: 'Contact', href: '/#contact' },
   ];
 
-  // If on home page and not scrolled, header is over the purple hero.
-  // Otherwise (scrolled or on other pages), header is white glass with dark text.
-  const isDarkHeader = isHomePage && !isScrolled;
+  // Both Home and ServiceDetail have a dark hero banner at the top.
+  // So the header should be dark (white text) initially, and white glass when scrolled.
+  const isDarkHeader = !isScrolled;
 
   return (
     <header 
