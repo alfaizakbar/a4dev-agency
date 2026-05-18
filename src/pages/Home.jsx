@@ -13,6 +13,17 @@ const Home = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
   
+  // Hero Graphic State
+  const [isVideoFinished, setIsVideoFinished] = useState(false);
+  const [showLogo, setShowLogo] = useState(false);
+
+  useEffect(() => {
+    if (isVideoFinished) {
+      const timer = setTimeout(() => setShowLogo(true), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [isVideoFinished]);
+  
   const agencyImages = [
     "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80",
     "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80",
@@ -142,7 +153,7 @@ const Home = () => {
               </motion.div>
             </motion.div>
 
-            {/* Interactive Godly Animated Typography / Graphic */}
+            {/* Interactive Hero Graphic (Video to Image Transition) */}
             <motion.div 
               style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', rotateX, rotateY, translateY, transformStyle: 'preserve-3d' }}
               initial={{ opacity: 0, scale: 0.8, filter: 'blur(20px)' }}
@@ -150,57 +161,57 @@ const Home = () => {
               transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
             >
               <div style={{ position: 'relative', width: '100%', maxWidth: '450px', aspectRatio: '1/1', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                {/* Layer 1: Blurred glowing background orb */}
+                {/* Glow effect behind the graphic */}
                 <motion.div 
                   animate={{ 
-                    scale: [1, 1.2, 1],
-                    opacity: [0.4, 0.8, 0.4],
+                    scale: [1, 1.1, 1],
+                    opacity: [0.3, 0.6, 0.3],
                   }}
                   transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                  style={{ position: 'absolute', width: '80%', height: '80%', background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)', borderRadius: '50%', filter: 'blur(70px)', zIndex: 0 }}
+                  style={{ position: 'absolute', width: '80%', height: '80%', background: 'radial-gradient(circle, rgba(147, 197, 253, 0.4) 0%, transparent 70%)', borderRadius: '50%', filter: 'blur(40px)', zIndex: 0 }}
                 />
                 
-                {/* Layer 2: Main A4DEV Floating Glass Card */}
-                <motion.div
-                  animate={{ 
-                    y: [-15, 15, -15],
-                    rotateZ: [-1, 1, -1]
-                  }}
-                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                  style={{ position: 'relative', zIndex: 10, background: 'rgba(255, 255, 255, 0.05)', backdropFilter: 'blur(24px)', border: '1px solid rgba(255, 255, 255, 0.15)', padding: '60px 40px', borderRadius: '32px', boxShadow: '0 30px 60px rgba(0,0,0,0.3)', textAlign: 'center', width: '100%' }}
-                >
-                  <motion.h2 
-                    animate={{ opacity: [0.7, 1, 0.7] }}
-                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                    style={{ fontSize: 'clamp(48px, 6vw, 72px)', fontWeight: 900, background: 'linear-gradient(to right, #ffffff, #93c5fd)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', letterSpacing: '-2px', margin: 0, lineHeight: 1 }}
-                  >
-                    A4DEV
-                  </motion.h2>
-                  <div style={{ fontSize: '18px', fontWeight: 600, color: '#cbd5e1', marginTop: '16px', letterSpacing: '4px' }}>AGENCY</div>
-                  
-                  {/* Decorative code mockup inside the card */}
-                  <div style={{ marginTop: '40px', display: 'flex', flexDirection: 'column', gap: '10px', opacity: 0.5, alignItems: 'center' }}>
-                    <div style={{ height: '6px', width: '80%', background: 'rgba(255,255,255,0.3)', borderRadius: '100px' }}></div>
-                    <div style={{ height: '6px', width: '60%', background: 'rgba(255,255,255,0.3)', borderRadius: '100px' }}></div>
-                    <div style={{ height: '6px', width: '40%', background: 'rgba(255,255,255,0.3)', borderRadius: '100px' }}></div>
-                  </div>
-                </motion.div>
-                
-                {/* Layer 3: Floating Orbiting Code Icon */}
-                <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-                  style={{ position: 'absolute', width: '130%', height: '130%', border: '1px dashed rgba(255,255,255,0.1)', borderRadius: '50%', zIndex: 5 }}
-                >
-                  {/* We counter-rotate the icon so it stays upright while orbiting */}
-                  <motion.div 
-                    animate={{ rotate: -360 }}
-                    transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-                    style={{ position: 'absolute', top: '-15px', left: '50%', marginLeft: '-24px', background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.2)', padding: '12px', borderRadius: '16px', boxShadow: '0 10px 20px rgba(0,0,0,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                  >
-                    <Code size={24} color="#93c5fd" />
-                  </motion.div>
-                </motion.div>
+                <div style={{ position: 'relative', zIndex: 10, width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                  <AnimatePresence mode="wait">
+                    {!isVideoFinished && (
+                      <motion.video 
+                        key="hero-video"
+                        src="/VIDEO-LOGO.mp4" 
+                        autoPlay 
+                        muted 
+                        playsInline 
+                        onEnded={() => setIsVideoFinished(true)}
+                        initial={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.5 }}
+                        transition={{ duration: 0.6, ease: "easeInOut" }}
+                        style={{ width: '100%', height: 'auto', borderRadius: '24px', objectFit: 'contain', boxShadow: '0 30px 60px rgba(0,0,0,0.3)' }}
+                      />
+                    )}
+                    
+                    {showLogo && (
+                      <motion.img 
+                        key="hero-logo"
+                        src="/logo-white-gede.jpg" 
+                        alt="A4DEV Logo Large"
+                        initial={{ opacity: 0, scale: 0.5, rotate: -10 }}
+                        animate={{ 
+                          opacity: 1, 
+                          scale: 1,
+                          rotate: 0,
+                          y: [-10, 10, -10], // Slight floating animation
+                          rotateZ: [-2, 2, -2] // Slight rotation
+                        }}
+                        transition={{ 
+                          opacity: { duration: 0.6, ease: "easeInOut" },
+                          scale: { duration: 0.6, ease: "easeInOut" },
+                          y: { duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.6 },
+                          rotateZ: { duration: 6, repeat: Infinity, ease: "easeInOut", delay: 0.6 }
+                        }}
+                        style={{ width: '100%', height: 'auto', borderRadius: '24px', objectFit: 'contain', boxShadow: '0 30px 60px rgba(0,0,0,0.3)' }}
+                      />
+                    )}
+                  </AnimatePresence>
+                </div>
               </div>
             </motion.div>
           </div>

@@ -106,6 +106,36 @@ const ServiceDetail = () => {
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
   };
 
+  // Set to true to show the "Incoming" page by default
+  // Set to false later when projects are ready to be displayed
+  const isIncoming = true;
+
+  if (isIncoming) {
+    return (
+      <div style={{ background: '#f8fafc', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+        <section className="hero-section" style={{ minHeight: '100vh', padding: '160px 0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ position: 'absolute', top: '0', left: '50%', transform: 'translateX(-50%)', width: '100vw', height: '100%', background: 'radial-gradient(ellipse at top, rgba(255, 255, 255, 0.15), transparent 70%)', pointerEvents: 'none' }}></div>
+          
+          <div className="container" style={{ position: 'relative', zIndex: 10, textAlign: 'center' }}>
+            <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+              <Link to="/#services" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#94a3b8', marginBottom: '32px', fontWeight: 600, fontSize: '15px', transition: 'color 0.2s', padding: '8px 16px', background: 'rgba(255,255,255,0.05)', borderRadius: '100px', border: '1px solid rgba(255,255,255,0.1)' }} onMouseOver={(e) => e.currentTarget.style.color = 'white'} onMouseOut={(e) => e.currentTarget.style.color = '#94a3b8'}>
+                <ArrowLeft size={18} /> Kembali ke Beranda
+              </Link>
+            </motion.div>
+            
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }} style={{ fontSize: 'clamp(42px, 5vw, 64px)', fontWeight: 800, color: 'white', letterSpacing: '-1.5px', marginBottom: '24px', lineHeight: 1.1 }}>
+              Projects Incoming
+            </motion.h1>
+            
+            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }} style={{ fontSize: '18px', color: '#cbd5e1', lineHeight: 1.7, maxWidth: '700px', margin: '0 auto' }}>
+              Halaman portofolio untuk <strong>{service.title}</strong> sedang dalam tahap persiapan. Kami akan segera memperbarui daftar proyek unggulan kami di sini.
+            </motion.p>
+          </div>
+        </section>
+      </div>
+    );
+  }
+
   return (
     <div style={{ background: '#f8fafc', minHeight: '100vh', paddingBottom: '120px' }}>
       {/* Hero Section */}

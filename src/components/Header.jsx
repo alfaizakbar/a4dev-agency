@@ -30,23 +30,25 @@ const Header = () => {
   const isDarkHeader = !isScrolled;
 
   return (
-    <header 
-      style={{ 
-        position: 'fixed', 
-        top: 0, 
-        left: 0, 
-        right: 0, 
-        zIndex: 50,
-        transition: 'all 0.3s ease',
-        padding: isScrolled ? '16px 0' : '24px 0',
-        color: isDarkHeader ? '#ffffff' : 'var(--text-color)',
-      }}
-      className={isScrolled ? 'glass' : (isDarkHeader ? '' : 'glass')}
-    >
+    <>
+      <header 
+        style={{ 
+          position: 'fixed', 
+          top: 0, 
+          left: 0, 
+          right: 0, 
+          zIndex: 50,
+          transition: 'all 0.3s ease',
+          padding: isScrolled ? '16px 0' : '24px 0',
+          color: isDarkHeader ? '#ffffff' : 'var(--text-color)',
+        }}
+        className={isScrolled ? 'glass' : (isDarkHeader ? '' : 'glass')}
+      >
       <div className="container flex justify-between items-center" style={{ position: 'relative' }}>
         {/* Logo (Left) */}
-        <Link to="/" style={{ fontSize: '24px', fontWeight: 800, letterSpacing: '-1px', color: isDarkHeader ? '#ffffff' : 'var(--primary-color)', zIndex: 10 }}>
-          A4<span style={{ color: isDarkHeader ? '#cbd5e1' : '#1e293b' }}>DEV</span>
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '24px', fontWeight: 800, letterSpacing: '-1px', color: isDarkHeader ? '#ffffff' : 'var(--primary-color)', zIndex: 10 }}>
+          <img src={isDarkHeader ? "/logo.png" : "/logo-black.png"} alt="A4DEV Logo" style={{ width: '36px', height: '36px', borderRadius: '8px', objectFit: 'cover' }} />
+          <div>A4<span style={{ color: isDarkHeader ? '#cbd5e1' : '#1e293b' }}>DEV</span></div>
         </Link>
 
         {/* Desktop Menu (Center) */}
@@ -89,40 +91,109 @@ const Header = () => {
           </button>
         </div>
       </div>
+    </header>
 
-      {/* Mobile Menu */}
-      <AnimatePresence>
+    {/* Mobile Menu (Full Screen) */}
+    <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div 
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, clipPath: 'circle(0% at 100% 0%)' }}
+            animate={{ opacity: 1, clipPath: 'circle(150% at 100% 0%)' }}
+            exit={{ opacity: 0, clipPath: 'circle(0% at 100% 0%)' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
             style={{
-              position: 'absolute',
-              top: '100%',
+              position: 'fixed',
+              top: 0,
               left: 0,
               right: 0,
-              background: '#ffffff',
+              bottom: 0,
+              backgroundColor: 'var(--primary-color)',
+              backgroundImage: 'linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px)',
+              backgroundSize: '40px 40px',
+              zIndex: 100,
+              display: 'flex',
+              flexDirection: 'column',
               padding: '24px',
-              borderBottom: '1px solid var(--card-border)',
-              boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)'
+              color: 'white',
+              fontFamily: "'Plus Jakarta Sans', sans-serif"
             }}
-            className="flex flex-col gap-6"
           >
-            {navLinks.map((link) => (
-              <a 
-                key={link.name} 
-                href={link.href}
+            {/* Top Bar inside Menu */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              {/* Logo */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '24px', fontWeight: 800, letterSpacing: '-1px' }}>
+                <img src="/logo.png" alt="A4DEV Logo" style={{ width: '36px', height: '36px', borderRadius: '8px', objectFit: 'cover' }} />
+                <div>A4<span style={{ color: '#cbd5e1' }}>DEV</span></div>
+              </div>
+              
+              {/* Close Button */}
+              <button 
                 onClick={() => setMobileMenuOpen(false)}
-                style={{ fontSize: '18px', fontWeight: 500, color: 'var(--text-color)' }}
+                style={{ 
+                  background: 'rgba(255,255,255,0.1)', 
+                  border: 'none', 
+                  color: 'white', 
+                  width: '40px', 
+                  height: '40px', 
+                  borderRadius: '50%', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  backdropFilter: 'blur(10px)'
+                }}
               >
-                {link.name}
+                <X size={24} />
+              </button>
+            </div>
+
+            {/* Links */}
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '24px', marginTop: '20px' }}>
+              {navLinks.map((link) => (
+                <a 
+                  key={link.name} 
+                  href={link.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  style={{ 
+                    fontSize: '18px', 
+                    fontWeight: 500, 
+                    color: 'white',
+                    textDecoration: 'none',
+                    display: 'flex',
+                    alignItems: 'center'
+                  }}
+                >
+                  {link.name}
+                </a>
+              ))}
+
+              <div style={{ width: '100%', height: '1px', background: 'rgba(255,255,255,0.2)', margin: '16px 0' }} />
+
+              <a 
+                href="#services"
+                onClick={() => setMobileMenuOpen(false)}
+                style={{
+                  fontSize: '18px',
+                  fontWeight: 700,
+                  color: 'white',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  textDecoration: 'none',
+                }}
+              >
+                Mulai Proyek →
               </a>
-            ))}
+            </div>
+
+            {/* Footer */}
+            <div style={{ fontSize: '12px', fontWeight: 600, color: 'rgba(255,255,255,0.6)', textTransform: 'uppercase', letterSpacing: '1px', marginTop: 'auto', paddingBottom: '16px' }}>
+              A4DEV AGENCY © {new Date().getFullYear()}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </header>
+    </>
   );
 };
 
